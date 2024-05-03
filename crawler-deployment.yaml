@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: synergychat-crawler
   labels:
     app: synergychat-crawler
+  name: synergychat-crawler
   namespace: crawler
 spec:
   replicas: 1
@@ -27,7 +27,7 @@ spec:
         - image: bootdotdev/synergychat-crawler:latest
           name: synergychat-crawler-2
           env:
-            - name: CRAWLER_PORT 
+            - name: CRAWLER_PORT
               valueFrom:
                 configMapKeyRef:
                   name: synergychat-crawler-configmap
@@ -37,13 +37,18 @@ spec:
                 configMapKeyRef:
                   name: synergychat-crawler-configmap
                   key: CRAWLER_KEYWORDS
+            - name: CRAWLER_DB_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: synergychat-crawler-configmap
+                  key: CRAWLER_DB_PATH
           volumeMounts:
             - name: cache-volume
               mountPath: /cache
         - image: bootdotdev/synergychat-crawler:latest
           name: synergychat-crawler-3
           env:
-            - name: CRAWLER_PORT 
+            - name: CRAWLER_PORT
               valueFrom:
                 configMapKeyRef:
                   name: synergychat-crawler-configmap
@@ -53,6 +58,11 @@ spec:
                 configMapKeyRef:
                   name: synergychat-crawler-configmap
                   key: CRAWLER_KEYWORDS
+            - name: CRAWLER_DB_PATH
+              valueFrom:
+                configMapKeyRef:
+                  name: synergychat-crawler-configmap
+                  key: CRAWLER_DB_PATH
           volumeMounts:
             - name: cache-volume
               mountPath: /cache
